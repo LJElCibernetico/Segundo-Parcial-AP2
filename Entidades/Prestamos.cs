@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
+    [Serializable]
     public class Prestamos
     {
         [Key]
@@ -14,21 +15,27 @@ namespace Entidades
 
         public DateTime Fecha { get; set; }
         public int CuentaId { get; set; }
-        public double Capital { get; set; }
-        public double InteresAnual { get; set; }
+        public decimal Capital { get; set; }
+        public decimal InteresAnual { get; set; }
         public int TiempoMeses { get; set; }
+        public decimal CapitaTotal { get; set; }
+        public decimal InteresTotal { get; set; }
+        public decimal Total { get; set; }
 
         public virtual List<PrestamoDetalle> Detalle { get; set; }
 
-        public Prestamos(int prestamosId, DateTime fecha, int cuentaId, double capital, double interesAnual, int tiempoMeses, List<PrestamoDetalle> detalle)
+        public Prestamos(int prestamosId, DateTime fecha, int cuentaId, decimal capital, decimal interesAnual, int tiempoMeses, decimal capitaTotal, decimal interesTotal, decimal total, List<PrestamoDetalle> detalle)
         {
-            this.PrestamosId = prestamosId;
-            this.Fecha = fecha;
-            this.CuentaId = cuentaId;
-            this.Capital = capital;
-            this.InteresAnual = interesAnual;
-            this.TiempoMeses = tiempoMeses;
-            this.Detalle = detalle;
+            PrestamosId = prestamosId;
+            Fecha = fecha;
+            CuentaId = cuentaId;
+            Capital = capital;
+            InteresAnual = interesAnual;
+            TiempoMeses = tiempoMeses;
+            CapitaTotal = capitaTotal;
+            InteresTotal = interesTotal;
+            Total = total;
+            Detalle = detalle;
         }
 
         public Prestamos()
@@ -39,6 +46,9 @@ namespace Entidades
             this.Capital = 0;
             this.InteresAnual = 0;
             this.TiempoMeses = 0;
+            CapitaTotal = 0;
+            InteresTotal = 0;
+            Total = 0;
             Detalle = new List<PrestamoDetalle>();
         }
     }

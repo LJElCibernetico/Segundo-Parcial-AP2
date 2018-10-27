@@ -14,7 +14,7 @@ namespace Entidades
 
         public DateTime Fecha { get; set; }
         public string Nombre { get; set; }
-        public double Balance { get; set; }
+        public decimal Balance { get; set; }
 
         public CuentasBancarias(int cuentaId, DateTime fecha, string nombre)
         {

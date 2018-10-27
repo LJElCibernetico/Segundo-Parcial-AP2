@@ -5,7 +5,7 @@ namespace DAL
 {
     public class Contexto : DbContext
     {
-        public DbSet<Prestamos> Deposito { get; set; }
+        public DbSet<Prestamos> Prestamo { get; set; }
         public DbSet<CuentasBancarias> Cuenta { get; set; }
 
         public Contexto() : base("ConStr")

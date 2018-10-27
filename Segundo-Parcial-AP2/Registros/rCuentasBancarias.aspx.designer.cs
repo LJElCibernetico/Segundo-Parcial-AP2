@@ -22,6 +22,15 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxCuentaID;
         
         /// <summary>
+        /// RequiredFieldValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        
+        /// <summary>
         /// ButtonBuscar control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxFecha;
         
         /// <summary>
+        /// RequiredFieldValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator;
+        
+        /// <summary>
         /// TextBoxNombre control.
         /// </summary>
         /// <remarks>
@@ -47,6 +65,15 @@ namespace Segundo_Parcial_AP2.Registros {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBoxNombre;
+        
+        /// <summary>
+        /// RequiredFieldValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
         
         /// <summary>
         /// TextBoxBalance control.

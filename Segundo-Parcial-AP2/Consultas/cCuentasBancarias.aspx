@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="cCuentasBancarias.aspx.cs" Inherits="Segundo_Parcial_AP2.Consultas.cCuentasBancarias" %>
 
+<%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -38,6 +40,30 @@
                             <asp:BoundField DataField="Balance" HeaderText="Balance" />
                         </Columns>
                     </asp:GridView>
+                </div>
+            </div>
+
+            <!-- Large modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Reporte</button>
+
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Reporte de Cuentas Bancarias</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="div1">
+                                <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                                <rsweb:ReportViewer ID="CuentasReportViewer" Width="100%" runat="server"></rsweb:ReportViewer>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

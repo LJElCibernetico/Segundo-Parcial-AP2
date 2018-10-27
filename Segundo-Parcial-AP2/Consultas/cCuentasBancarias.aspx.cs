@@ -1,5 +1,6 @@
 ﻿using BLL;
 using Entidades;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,23 @@ namespace Segundo_Parcial_AP2.Consultas
 {
     public partial class cCuentasBancarias : System.Web.UI.Page
     {
+        BLL.RepositorioBase<CuentasBancarias> repositorio = new BLL.RepositorioBase<CuentasBancarias>();
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Page.IsPostBack)
+            {
+                CuentasReportViewer.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+                CuentasReportViewer.Reset();
 
+                CuentasReportViewer.LocalReport.ReportPath = Server.MapPath(@"~\Reportes\ReporteCuentas.rdlc");
+
+                CuentasReportViewer.LocalReport.DataSources.Clear();
+
+                CuentasReportViewer.LocalReport.DataSources.Add(new ReportDataSource("Cuentas", repositorio.GetList(x => true)));
+                CuentasReportViewer.LocalReport.Refresh();
+            }
         }
-        //OnClick="BuscarLinkButton_Click" 
+
         Expression<Func<CuentasBancarias, bool>> filtro = x => true;
         protected void CuentaGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -50,7 +63,7 @@ namespace Segundo_Parcial_AP2.Consultas
                     break;
 
                 case 4://Balance
-                    double balance = double.Parse(TextBoxBuscar.Text);
+                    decimal balance = decimal.Parse(TextBoxBuscar.Text);
                     filtro = (x => x.Balance == balance);
                     break;
             }

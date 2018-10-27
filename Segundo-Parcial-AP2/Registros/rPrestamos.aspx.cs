@@ -3,7 +3,6 @@ using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -11,89 +10,86 @@ namespace Segundo_Parcial_AP2.Registros
 {
     public partial class rPrestamos : System.Web.UI.Page
     {
-        private RepositorioBase<Prestamos> prestamo = new RepositorioBase<Prestamos>();
-        private RepositorioBase<CuentasBancarias> cuenta = new RepositorioBase<CuentasBancarias>();
-        private RepositorioBase<PrestamoDetalle> cuotas = new RepositorioBase<PrestamoDetalle>();
-        private RepositorioPrestamo bllDetalle = new RepositorioPrestamo();
+        public bool active { get; set; }
         List<PrestamoDetalle> detalle = new List<PrestamoDetalle>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (Application["visits"] == null)
-                {
-                    ListItem empty = new ListItem();
-                    CuentasDropDownList.Items.Add(empty);
-
-                    Expression<Func<CuentasBancarias, bool>> filter = x => true;
-                    var itemCount = cuenta.GetList(filter).Count;
-
-                    if (itemCount > 0)
-                    {
-                        foreach (var i in cuenta.GetList(filter))
-                        {
-                            ListItem list = new ListItem(i.Nombre, Convert.ToString(i.CuentaId), true);
-                            CuentasDropDownList.Items.Add(list);
-                        }
-                        CuentasDropDownList.DataBind();
-                    }
-                }
+                ListCuentas();
+                ViewState.Add("Detalle", detalle);
+                ViewState.Add("Active", active);
             }
+            else
+            {
+                detalle = (List<PrestamoDetalle>)ViewState["Detalle"];
+                active = (bool)ViewState["Active"];
+            }
+
+
+            TextBoxFecha.Text = DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         protected void ButtonCalcular_Click(object sender, EventArgs e)
         {
-            int acu = 1;
-            double Capital = double.Parse(TextBoxCapital.Text);
-            double Interes = double.Parse(TextBoxInteresAnual.Text) / 1200;
-            double Tiempo = double.Parse(TextBoxTiempoMeses.Text);
+            detalle.Clear();
+            int tiempo = int.Parse(TextBoxTiempoMeses.Text);
+            decimal tasa = (Decimal.Parse(TextBoxInteresAnual.Text) / 100);
+            decimal cuota = Decimal.Parse(TextBoxCapital.Text) * (tasa / 12) / (decimal)(1 - Math.Pow((double)(1 + (tasa / 12)), -tiempo));
+            decimal capital = Decimal.Parse(TextBoxCapital.Text);
+            decimal totalC = 0, totalI = 0;
 
-            double Cuota = Capital * (Interes / (double)(1 - Math.Pow(1 + (double)Interes, -Tiempo)));
-            double InteresMensual = 0, AmTotal = 0, Am = 0;
-            Expression<Func<Prestamos, bool>> filtro = x => true;
-
-            for (int i = 0; i < Tiempo; ++i)
+            for (int i = 1; i <= int.Parse(TextBoxTiempoMeses.Text); ++i)
             {
-                PrestamoDetalle prestamoD = new PrestamoDetalle();
-                InteresMensual = Math.Round((Interes * Capital), 2);
-                Capital = Math.Round(Capital - Cuota + InteresMensual, 2);
+                PrestamoDetalle pd = new PrestamoDetalle();
+                pd.PrestamoId = int.Parse(TextBoxPrestamoID.Text);
+                pd.numCuota = i;
+                pd.Valor = Math.Round(cuota, 2);
+                pd.Interes = decimal.Round(capital * (tasa / 12), 2);
+                pd.Capital = decimal.Round(cuota - pd.Interes, 2);
+                pd.Balance = decimal.Round(capital - pd.Capital, 2);
+                capital = pd.Balance;
 
-                AmTotal += Math.Round(Cuota - InteresMensual, 2);
-                Am = Cuota - InteresMensual;
+                totalC += pd.Capital;
+                totalI += pd.Interes;
 
-                prestamoD.numCuota = acu;
-                prestamoD.PrestamoId = prestamo.GetList(filtro).Count + 1;
-                prestamoD.Valor = Math.Round((decimal)Cuota, 2);
-                prestamoD.Capital = Math.Round((decimal)Am, 2);
-                prestamoD.Interes = Math.Round((decimal)InteresMensual, 2);
-                if (i == Tiempo - 1)
-                {
-                    decimal Aux = Math.Round((decimal)Capital, MidpointRounding.AwayFromZero);
-                    if (Aux == 0)
-                        prestamoD.Balance = (decimal)0.00;
-                }
-                else
-                    prestamoD.Balance = Math.Round((decimal)Capital, 2);
-                cuotas.Guardar(prestamoD);
-                detalle.Add(prestamoD);
-                ++acu;
+                detalle.Add(pd);
             }
-            CuotasGridView.DataSource = detalle;
+            CuotasGridView.DataSource = detalle.ToList();
             CuotasGridView.DataBind();
-            visible();
+            ViewState["Detalle"] = detalle;
+            TextBoxCapitalTotal.Text = Decimal.Floor(totalC).ToString();
+            TextBoxInteresTotal.Text = totalI.ToString();
+            ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Cuotas calculadas')", true);
+            _Visible();
         }
 
-        private void visible()
+        private void ListCuentas()
         {
+            RepositorioBase<CuentasBancarias> rep = new RepositorioBase<CuentasBancarias>();
+            CuentasDropDownList.DataSource = rep.GetList(x => true);
+            CuentasDropDownList.DataValueField = "CuentaId";
+            CuentasDropDownList.DataTextField = "Nombre";
+            CuentasDropDownList.DataBind();
+            CuentasDropDownList.Items.Insert(0, new ListItem("", ""));
+        }
+
+
+        private void _Visible()
+        {
+            TextBoxCapitalTotal.Visible = true;
+            TextBoxInteresTotal.Visible = true;
             ButtonNuevo.Visible = true;
             ButtonGuardar.Visible = true;
             ButtonEliminar.Visible = true;
             ButtonImprimir.Visible = true;
         }
 
-        private void invisible()
+        private void Invisible()
         {
+            TextBoxCapitalTotal.Visible = false;
+            TextBoxInteresTotal.Visible = false;
             ButtonNuevo.Visible = false;
             ButtonGuardar.Visible = false;
             ButtonEliminar.Visible = false;
@@ -112,48 +108,105 @@ namespace Segundo_Parcial_AP2.Registros
             TextBoxInteresAnual.Text = String.Empty;
             TextBoxPrestamoID.Text = String.Empty;
             TextBoxTiempoMeses.Text = String.Empty;
-            CuentasDropDownList.DataTextField = string.Empty;
-            CuotasGridView.Visible = true;
+            TextBoxCapitalTotal.Text = String.Empty;
+            TextBoxInteresTotal.Text = String.Empty;
+            CuentasDropDownList.DataTextField = String.Empty;
+            CuotasGridView.DataSource = null;
             CuotasGridView.DataBind();
-            invisible();
+            active = false;
+            ViewState["Active"] = active;
+            Invisible();
         }
 
         protected void ButtonGuardar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TextBoxPrestamoID.Text))
+            RepositorioPrestamo rep = new RepositorioPrestamo();
+
+            if (int.Parse(TextBoxPrestamoID.Text) == 0)
             {
-                bllDetalle.Guardar(LlenarClase());
-                ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Se guardo el Prestamo.')", true);
+                if (rep.Guardar(LlenarClase()))
+                {
+                    ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Prestamo Guardado')", true);
+                    ClearAll();
+                }
             }
             else
             {
-                Prestamos prestamo1 = prestamo.Buscar(int.Parse(TextBoxPrestamoID.Text));
-
-                prestamo1.Fecha = DateTime.Parse(TextBoxFecha.Text);
-                prestamo1.CuentaId = int.Parse(CuentasDropDownList.SelectedItem.Value);
-                prestamo1.Capital = double.Parse(TextBoxCapital.Text);
-                prestamo1.InteresAnual = double.Parse(TextBoxInteresAnual.Text);
-                prestamo1.TiempoMeses = int.Parse(TextBoxTiempoMeses.Text);
-                prestamo1.Detalle = detalle;
-
-                prestamo.Modificar(prestamo1);
-                ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Se modifico el prestamo.')", true);
+                if (rep.Modificar(LlenarClase()))
+                {
+                    ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Prestamo Modificado')", true);
+                    ClearAll();
+                }
             }
-            ClearAll();
+
         }
+
 
         private Prestamos LlenarClase()
         {
             var Entidad = new Prestamos();
 
+            Entidad.PrestamosId = int.Parse(TextBoxPrestamoID.Text);
             Entidad.Fecha = Convert.ToDateTime(TextBoxFecha.Text);
             Entidad.CuentaId = int.Parse(CuentasDropDownList.SelectedItem.Value);
-            Entidad.Capital = double.Parse(TextBoxCapital.Text);
-            Entidad.InteresAnual = double.Parse(TextBoxInteresAnual.Text);
+            Entidad.Capital = decimal.Parse(TextBoxCapital.Text);
+            Entidad.InteresAnual = decimal.Parse(TextBoxInteresAnual.Text);
             Entidad.TiempoMeses = int.Parse(TextBoxTiempoMeses.Text);
+            Entidad.CapitaTotal = decimal.Parse(TextBoxCapitalTotal.Text);
+            Entidad.InteresTotal = decimal.Parse(TextBoxInteresTotal.Text);
+            Entidad.Total = decimal.Parse(TextBoxCapitalTotal.Text) + decimal.Parse(TextBoxInteresTotal.Text);
             Entidad.Detalle = detalle;
 
             return Entidad;
+        }
+
+        protected void ButtonBuscar_Click(object sender, EventArgs e)
+        {
+            RepositorioPrestamo rep = new RepositorioPrestamo();
+            Prestamos prestamo = rep.Buscar(int.Parse(TextBoxPrestamoID.Text));
+
+            if (prestamo != null)
+            {
+                LlenarCampos(prestamo);
+                active = true;
+                ViewState["Active"] = active;
+                _Visible();
+            }
+            else
+                ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Prestamo no Encontrado')", true);
+        }
+
+        private void LlenarCampos(Prestamos prestamo1)
+        {
+            TextBoxPrestamoID.Text = prestamo1.PrestamosId.ToString();
+            TextBoxFecha.Text = prestamo1.Fecha.ToString("yyyy-MM-dd");
+            CuentasDropDownList.SelectedValue = prestamo1.CuentaId.ToString();
+            TextBoxCapital.Text = prestamo1.Capital.ToString();
+            TextBoxInteresAnual.Text = prestamo1.InteresAnual.ToString();
+            TextBoxTiempoMeses.Text = prestamo1.TiempoMeses.ToString();
+            TextBoxCapitalTotal.Text = prestamo1.CapitaTotal.ToString();
+            TextBoxInteresTotal.Text = prestamo1.InteresTotal.ToString();
+            CuotasGridView.DataSource = prestamo1.Detalle.ToList();
+            CuotasGridView.DataBind();
+            ViewState["Detalle"] = prestamo1.Detalle;
+        }
+
+        protected void ButtonEliminar_Click(object sender, EventArgs e)
+        {
+            RepositorioPrestamo rep = new RepositorioPrestamo();
+            Prestamos prestamos = rep.Buscar(int.Parse(TextBoxPrestamoID.Text));
+
+            if (prestamos != null)
+            {
+                if (rep.Eliminar(int.Parse(TextBoxPrestamoID.Text)))
+                {
+                    ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('Prestamo eliminado')", true);
+                    ClearAll();
+                    Invisible();
+                }
+                else
+                    ScriptManager.RegisterStartupScript(Page, typeof(Page), "Popup", "alert('No se pudo eliminar el prestamo')", true);
+            }
         }
     }
 }

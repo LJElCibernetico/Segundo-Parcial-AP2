@@ -22,6 +22,24 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxPrestamoID;
         
         /// <summary>
+        /// RequiredFieldValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        
+        /// <summary>
+        /// RequiredFieldValidator6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
+        
+        /// <summary>
         /// ButtonBuscar control.
         /// </summary>
         /// <remarks>
@@ -40,6 +58,15 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxFecha;
         
         /// <summary>
+        /// RequiredFieldValidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
+        
+        /// <summary>
         /// CuentasDropDownList control.
         /// </summary>
         /// <remarks>
@@ -47,6 +74,15 @@ namespace Segundo_Parcial_AP2.Registros {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList CuentasDropDownList;
+        
+        /// <summary>
+        /// RequiredFieldValidator4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
         
         /// <summary>
         /// TextBoxCapital control.
@@ -58,6 +94,15 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxCapital;
         
         /// <summary>
+        /// RequiredFieldValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator;
+        
+        /// <summary>
         /// TextBoxInteresAnual control.
         /// </summary>
         /// <remarks>
@@ -67,6 +112,15 @@ namespace Segundo_Parcial_AP2.Registros {
         protected global::System.Web.UI.WebControls.TextBox TextBoxInteresAnual;
         
         /// <summary>
+        /// RequiredFieldValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        
+        /// <summary>
         /// TextBoxTiempoMeses control.
         /// </summary>
         /// <remarks>
@@ -74,6 +128,15 @@ namespace Segundo_Parcial_AP2.Registros {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBoxTiempoMeses;
+        
+        /// <summary>
+        /// RequiredFieldValidator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
         
         /// <summary>
         /// ButtonCalcular control.
@@ -92,6 +155,24 @@ namespace Segundo_Parcial_AP2.Registros {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView CuotasGridView;
+        
+        /// <summary>
+        /// TextBoxCapitalTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxCapitalTotal;
+        
+        /// <summary>
+        /// TextBoxInteresTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxInteresTotal;
         
         /// <summary>
         /// ButtonNuevo control.

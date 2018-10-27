@@ -10,7 +10,7 @@
 namespace Segundo_Parcial_AP2.Consultas {
     
     
-    public partial class cCuentasBancarias {
+    public partial class cPrestamo {
         
         /// <summary>
         /// DropDownListFiltro control.
@@ -40,30 +40,12 @@ namespace Segundo_Parcial_AP2.Consultas {
         protected global::System.Web.UI.WebControls.LinkButton BuscarLinkButton;
         
         /// <summary>
-        /// CuentaGridView control.
+        /// PrestamoGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView CuentaGridView;
-        
-        /// <summary>
-        /// ScriptManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-        
-        /// <summary>
-        /// CuentasReportViewer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Microsoft.Reporting.WebForms.ReportViewer CuentasReportViewer;
+        protected global::System.Web.UI.WebControls.GridView PrestamoGridView;
     }
 }
